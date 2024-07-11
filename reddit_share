@@ -1,0 +1,1381 @@
+// Function to set values for fields, handling multiple instances, and allowing value processing
+function setFieldValues(targetFieldNames, processValueFunction) {
+    for (var i = 0; i < targetFieldNames.length; i++) {
+        var fieldName = targetFieldNames[i];
+        var fields = this.getField(fieldName);
+
+        if (Array.isArray(fields)) {
+            // If fields is an array, loop through each instance and set the value
+            for (var j = 0; j < fields.length; j++) {
+                fields[j].value = processValueFunction ? processValueFunction() : "";
+            }
+        } else if (fields != null) {
+            // If fields is a single field, set its value
+            fields.value = processValueFunction ? processValueFunction() : "";
+        }
+    }
+}
+
+// Define a function to set the checked property for all instances of a field
+function setFieldChecked(fieldName, checked) {
+    var fields = this.getField(fieldName);
+    if (fields != null) {
+        if (fields.length == undefined) {
+            // Single instance
+            fields.checked = checked;
+        } else {
+            // Multiple instances
+            for (var i = 0; i < fields.length; i++) {
+                fields[i].checked = checked;
+            }
+        }
+    }
+}
+
+
+	var accountNumber = this.getField("ZX_AccNr_ffbh_DA").valueAsString.trim();
+	var accountNumber_fillFields = ["N", "Text Box 1_9_nvg", "Text Box 1_30", "Account number", "Text Field31", "Text Box 1_711"];
+
+	setFieldValues.call(this, accountNumber_fillFields, (function() {
+		return this.getField("ZX_AccNr_ffbh_DA").valueAsString.trim();
+	}).bind(this));
+
+	var accountName = this.getField("ZX_AccName_ffbh_DA").value;
+	var accountName_fillFields = ["Name", "Text Box 1_31", "Text Box 37", "Text Box 11_nvg", "Text Field33", "Text Box 1345", "Text Box 143", "Text1_Client", "Text Box 133aa", "Name of the Account Holder"];
+
+	setFieldValues.call(this, accountName_fillFields, function() {
+		return this.getField("ZX_AccName_ffbh_DA").value;
+	}.bind(this));
+
+	var accountNameAndNumber_fillFields = ["Text Field72", "Text Field570", "Text Field5700"];
+
+	// Function to process the source value for account name and number fields
+	function processAccountNameAndNumber() {
+		return accountName + " / " + accountNumber;
+	}
+
+	setFieldValues.call(this, accountNameAndNumber_fillFields, processAccountNameAndNumber);
+	
+	
+	var expectedInflow = this.getField("ZX_ExpInflow_ffbh_DA").value;
+	var orderingBank = this.getField("ZX_OrdBank_ffbh_DA").value;
+	var orderingBankCountry = this.getField("ZX_OrdBank_Ctry_ffbh_DA").value;
+	var orderingPtyDiff = this.getField("ZX_OrdPty_Diff_ffbh_DA").value;
+	var orderingPtyDiffExplanation = this.getField("ZX_OrdPty_Diff_Expl_ffbh_DA").value;
+
+	var signatureDate_DA = this.getField("ZX_SignDate_ffbh_DA").value;
+	
+	// Get the field SignDate_ffbh_DA
+	var signDateField = this.getField("ZX_SignDate_ffbh_DA");
+
+	// Check if the field is empty
+	if (!signDateField.value) {
+    // Set the variable signatureDate_DA with today's date
+    var signatureDate_DA = getFormattedDate();
+    
+    signDateField.value = signatureDate_DA;
+	}
+
+	var dtt_wSeries = [
+		"Armenia", "Australia", "Austria", "Azerbaijan", "Bangladesh", "Barbados", 
+		"Belarus", "Belgium", "Bulgaria", "Canada", "China", "Cyprus", 
+		"Czech Republic", "Denmark", "Egypt", "Estonia", "Finland", "France", 
+		"Georgia", "Germany", "Greece", "Hungary", "Iceland", "India", 
+		"Indonesia", "Ireland", "Israel", "Italy", "Jamaica", "Japan", 
+		"Kazakhstan", "Korea", "Kyrgyzstan", "Latvia", "Lithuania", "Luxembourg", 
+		"Malta", "Mexico", "Moldova", "Morocco", "Netherlands", "New Zealand", 
+		"Norway", "Pakistan", "Philippines", "Poland", "Portugal", "Romania", 
+		"Russia", "Slovak Republic", "Slovenia", "South Africa", "Spain", 
+		"Sri Lanka", "Sweden", "Switzerland", "Tajikistan", "Thailand", 
+		"Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Ukraine", 
+		"United Kingdom", "Uzbekistan", "Venezuela"
+	];
+	
+//RM
+	var rmName = this.getField("ZX_RM_ffbh_DA").value;
+	var s2iSgmt = this.getField("ZX_S2iSgmt_ffbh_DA").value;
+	this.getField("Segment S2i 3 numbers").value = s2iSgmt;
+	
+	// Fill all RM Name fields
+	var rmName_fillFields = ["Relationship Manager"];
+
+	setFieldValues.call(this, rmName_fillFields, function() {
+		return rmName;
+	});
+	
+//EAM
+	var legalName_EAM  = this.getField("ZX_EAM_Name_ffbh_DA").value;
+	var dateIncorporation_EAM = this.getField("ZX_EAM_DoI_ffbh_DA").value;
+	var countryIncorporation_EAM = this.getField("ZX_EAM_CoI_ffbh_DA").value;
+	var street_EAM = this.getField("ZX_EAM_Street_ffbh_DA").value;
+	var streetN_EAM = this.getField("ZX_EAM_StreetNO_ffbh_DA").valueAsString.trim();
+	var postCode_EAM = this.getField("ZX_EAM_Postcode_ffbh_DA").valueAsString.trim();
+	var city_EAM = this.getField("ZX_EAM_City_ffbh_DA").value;
+	var country_EAM = this.getField("ZX_EAM_Ctry_ffbh_DA").value;
+	var introducer_EAM = this.getField("ZX_EAM_intro_ffbh_DA").value;
+	var delegator_EAM = this.getField("ZX_EAM_dlgtr_ffbh_DA").value;
+	var cav_EAM = this.getField("ZX_EAM_cav_ffbh_DA").value;
+
+	// BULK ACTIONS FOR EAM
+	
+	// Fill all Name fields
+	var legalName_EAM_fillFields = ["Text2_EAM", "Introducer  External Asset Manager"];
+	setFieldValues.call(this, legalName_EAM_fillFields, function() {
+		return legalName_EAM;
+	});
+
+	// Fill all Address fields
+	this.getField("Text5_Address").value = street_EAM + " " + streetN_EAM + ", " + postCode_EAM + " " + city_EAM + ", " + country_EAM;
+
+	// Fill all Date of Incorporation fields
+	this.getField("Text3_DoI").value = dateIncorporation_EAM;
+
+	// Fill all Place of Incorporation fields
+	this.getField("Text4_PoI").value = countryIncorporation_EAM;
+
+	//Fill Place and Date of Signature EAM
+	this.getField("Text8_PnDEAM").value = country_EAM + ", " + signatureDate_DA;
+
+	if (introducer_EAM !== "") {
+		this.getField("Text70").value = "Client has been introduced by " + introducer_EAM + " from EAM " + legalName_EAM + ".\n" + "The client seeks to diversify their funds by choosing a smaller bank that offers a boutique approach.";
+	} else {
+		this.getField("Text70").value = "Client has been introduced by EAM " + legalName_EAM + ".\n" + "The client seeks to diversify their funds by choosing a smaller bank that offers a boutique approach.";
+	}
+
+// DIRECTOR 1
+	var firstName_D1 = this.getField("ZX_D1_FrstName_ffbh_DA").value;
+	var lastName_D1 = this.getField("ZX_D1_LastName_ffbh_DA").value;
+	var countryBirth_D1 = this.getField("ZX_D1_CtryoB_ffbh_DA").value;
+	var cityBirth_D1 = this.getField("ZX_D1_CityoB_ffbh_DA").value;
+	var dateBirth_D1 = this.getField("ZX_D1_DoB_ffbh_DA").value;
+	var citizenship_D1 = this.getField("ZX_D1_Citzn_ffbh_DA").value;
+	var street_D1 = this.getField("ZX_D1_Street_ffbh_DA").value;
+	var streetN_D1 = this.getField("ZX_D1_StreetNo_ffbh_DA").valueAsString.trim();
+	var postCode_D1 = this.getField("ZX_D1_Postcode_ffbh_DA").valueAsString.trim();
+	var city_D1 = this.getField("ZX_D1_City_ffbh_DA").value;
+	var country_D1 = this.getField("ZX_D1_Ctry_ffbh_DA").value;
+	var fullName_D1 = firstName_D1 + " " + lastName_D1;
+	var phone_D1 = this.getField("ZX_D1_Phone_ffbh_DA").valueAsString.trim();
+	var email_D1 = this.getField("ZX_D1_Email_ffbh_DA").value;
+	var idType_D1 = this.getField("ZX_D1_IDtype_ffbh_DA").value;
+	var idNumber_D1 = this.getField("ZX_D1_IDNo_ffbh_DA").valueAsString.trim();
+	var idExpiry_D1 = this.getField("ZX_D1_IDexpiry_ffbh_DA").value;
+	var idIssuedby_D1 = this.getField("ZX_D1_IDissuedby_ffbh_DA").value;
+	var signatureRight_D1 = this.getField("ZX_D1_SignRight_ffbh_DA").value;
+	var excerpt_D1 = this.getField("ZX_D1_Excerpt_DA").value;
+	var repEntity_D1 = this.getField("ZX_D1_RepEntity_ffbh_DA").value;
+	var repEntity_Jurisdiction_D1 = this.getField("ZX_D1_RepEntity_Jurisdiction_ffbh_DA").value;
+	
+	// Bulk Actions for Director 1
+	// Fill all D1 Full Name Fields
+	var fullName_D1_fillFields = ["Party B", "Text Box 41aa", "Text Box 1_52", "I the undersigned", "Name_1"];
+	setFieldValues.call(this, fullName_D1_fillFields, function() {
+    return fullName_D1;
+	});
+
+	this.getField("Family Name_p0").value = lastName_D1;
+	this.getField("First name all first names_p0").value = firstName_D1;
+	this.getField("Identity document_p0").value = idType_D1 + " " + idNumber_D1;
+	this.getField("Expiration date_p0").value = idExpiry_D1;
+	this.getField("Issued by_2_p0").value = idIssuedby_D1;
+	this.getField("Nationalityies_p0").value = citizenship_D1;
+	this.getField("Date of birth_p0").value = dateBirth_D1;
+	this.getField("Document providing the persons_p0").value = "Registrar of Company";
+	this.getField("Telephone number_p0").value = phone_D1;
+	this.getField("Email_p0").value = email_D1;	
+	
+	//fill Addresses of Director 1
+	this.getField("Text Box 41b").value = street_D1 + " " + streetN_D1 + ", " + postCode_D1 + " " + city_D1 + ", " + country_D1;
+
+	// Fill Signature Right
+	if (signatureRight_D1 === "Select") {
+		this.getField("Text Box 41c").value = "";
+	} else if (signatureRight_D1 === "IND") {
+		this.getField("Text Box 41c").value = "IND";
+	} else if (signatureRight_D1 === "COL") {
+		this.getField("Text Box 41c").value = "COL";
+	}
+
+	// Fill Director 1 Nationality, City/Country of birth
+	if (cityBirth_D1.trim() === "") {
+		this.getField("Text Box 41a").value = "Nationality(ies):\n" + citizenship_D1 + "\nPlace of Birth:\n" + countryBirth_D1;
+	} else {
+		this.getField("Text Box 41a").value = "Nationality(ies):\n" + citizenship_D1 + "\nPlace of Birth:\n" + cityBirth_D1 + ", " + countryBirth_D1;
+	}
+	// E-banking Profile - Consultation 
+	this.getField("Check Box 1_716").checked = true;
+
+// DIRECTOR 2
+	var firstName_D2 = this.getField("ZX_D2_FrstName_ffbh_DA").value;
+	var lastName_D2 = this.getField("ZX_D2_LastName_ffbh_DA").value;
+	var countryBirth_D2 = this.getField("ZX_D2_CtryoB_ffbh_DA").value;
+	var cityBirth_D2 = this.getField("ZX_D2_CityoB_ffbh_DA").value;
+	var dateBirth_D2 = this.getField("ZX_D2_DoB_ffbh_DA").value;
+	var citizenship_D2 = this.getField("ZX_D2_Citzn_ffbh_DA").value;
+	var street_D2 = this.getField("ZX_D2_Street_ffbh_DA").value;
+	var streetN_D2 = this.getField("ZX_D2_StreetNo_ffbh_DA").valueAsString.trim();
+	var postCode_D2 = this.getField("ZX_D2_Postcode_ffbh_DA").valueAsString.trim();
+	var city_D2 = this.getField("ZX_D2_City_ffbh_DA").value;
+	var country_D2 = this.getField("ZX_D2_Ctry_ffbh_DA").value;
+	var fullName_D2 = firstName_D2 + " " + lastName_D2;
+	var phone_D2 = this.getField("ZX_D2_Phone_ffbh_DA").valueAsString.trim();
+	var email_D2 = this.getField("ZX_D2_Email_ffbh_DA").value;
+	var idType_D2 = this.getField("ZX_D2_IDtype_ffbh_DA").value;
+	var idNumber_D2 = this.getField("ZX_D2_IDNo_ffbh_DA").valueAsString.trim();
+	var idExpiry_D2 = this.getField("ZX_D2_IDexpiry_ffbh_DA").value;
+	var idIssuedby_D2 = this.getField("ZX_D2_IDissuedby_ffbh_DA").value;
+	var signatureRight_D2 = this.getField("ZX_D2_SignRight_ffbh_DA").value;
+	var excerpt_D2 = this.getField("ZX_D2_Excerpt_DA").value;
+	var repEntity_D2 = this.getField("ZX_D2_RepEntity_ffbh_DA").value;
+	var repEntity_Jurisdiction_D2 = this.getField("ZX_D2_RepEntity_Jurisdiction_ffbh_DA").value;
+	
+	// BULK ACTIONS FOR DIRECTOR 2
+	
+	// Fill all D2 Full Name Fields
+	var fullName_D2_fillFields = ["Name 2", "Text Box 41d", "Text Box 1_53", "Name_2"];
+	setFieldValues.call(this, fullName_D2_fillFields, function() {
+		return fullName_D2;
+	});
+
+	this.getField("Family Name_2_p0").value = lastName_D2;
+	this.getField("First name all first names_2_p0").value = firstName_D2;
+	this.getField("Identity document_2_p0").value = idType_D2 + " " + idNumber_D2;
+	this.getField("Expiration date_2_p0").value = idExpiry_D2;
+	this.getField("Issued by_3_p0").value = idIssuedby_D2;
+	this.getField("Nationalityies_2_p0").value = citizenship_D2;
+	this.getField("Date of birth_2_p0").value = dateBirth_D2;
+	this.getField("Document providing the persons_2_p0").value = "Registrar of Company";
+	this.getField("Telephone number_p1").value = phone_D2;
+	this.getField("Email_p1").value = email_D2;	
+
+	if (firstName_D2.trim() !== "") {
+	// Fill Address field(s) of Director 2
+		this.getField("Text Box 41f").value = street_D2 + " " + streetN_D2 + ", " + postCode_D2 + " " + city_D2 + ", " + country_D2;
+		
+	// Fill Signature Right field of Director 2
+		this.getField("Text Box 41g").value = signatureRight_D2;
+		
+	// Fill Nationality, City/Country of birth of Director 2
+		if (cityBirth_D2.trim() === "") {
+			this.getField("Text Box 41e").value = "Nationality(ies):\n" + citizenship_D2 + "\nPlace of Birth:\n" + countryBirth_D2;
+		} else {
+			this.getField("Text Box 41e").value = "Nationality(ies):\n" + citizenship_D2 + "\nPlace of Birth:\n" + cityBirth_D2 + ", " + countryBirth_D2;
+		}
+			
+	// FMIA D2 Place and Date
+		this.getField("Place 2").value = country_D2 + ", " + signatureDate_DA;
+		
+	// Check E-banking Profile Checkbox 
+		this.getField("Check Box 1_1019").checked = true;
+
+	} else {
+		// Uncheck the checkbox if the first name is empty
+		this.getField("Check Box 1_1019").checked = false;
+	}
+
+
+// D1+D2
+
+	// Fill all Print Names for Director(s) Names
+	var printName_D1D2;
+
+	// Check if all fields have values
+	if (firstName_D1 && lastName_D1 && firstName_D2 && lastName_D2) {
+		// Concatenate names with ' / ' if all fields have values
+		printName_D1D2 = firstName_D1 + " " + lastName_D1 + " / " + firstName_D2 + " " + lastName_D2;
+	} else {
+		// If any of the D2 fields are empty, use only D1 names
+		printName_D1D2 = firstName_D1 + " " + lastName_D1;
+	}
+	this.getField("topmostSubform[0].Page8[0].f8_31[0]175").value = printName_D1D2;
+	this.getField("fill_46").value = printName_D1D2;
+	
+	// Mouse-up event script for PDF button to set today's date in the format dd.mm.yyyy
+	// if the field SignDate_ffbh_DA is empty, and assign it to the variable signatureDate_DA
+
+	// Define the function to get today's date in dd.mm.yyyy format
+	function getFormattedDate() {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    var yyyy = today.getFullYear();
+
+    return dd + '.' + mm + '.' + yyyy;
+	}
+
+	// Get the field SignDate_ffbh_DA
+	var signDateField = this.getField("ZX_SignDate_ffbh_DA");
+
+	// Check if the field is empty
+	if (!signDateField.value) {
+    // Set the variable signatureDate_DA with today's date
+    var signatureDate_DA = getFormattedDate();
+    
+    signDateField.value = signatureDate_DA;
+	}
+
+	// Fill all Signature Date fields withOUT Place
+		var signatureDate_DA_fillFields = ["Text Box 850_nvg", "Text Field56", "Text Box 852", "fill_47"];
+		setFieldValues.call(this, signatureDate_DA_fillFields, function() {
+		return signatureDate_DA;
+	});
+
+	this.getField("PLACE / DATE1").value = country_D1 + ", ";
+
+	// Function to convert signature date from "dd.mm.yyyy" to "MM-DD-YYYY"
+	function convertDateFormat(dateStr) {
+		var parts = dateStr.split('.'); // Split the date by '.'
+		if (parts.length === 3) {
+			var day = parts[0];
+			var month = parts[1];
+			var year = parts[2];
+			return month + '-' + day + '-' + year; // Convert to "MM-DD-YYYY" format
+		}
+		return dateStr; // Return the original string if it doesn't match the expected format
+	}
+
+// Fill all US date format Signature Date fields
+	var signatureDateUS_DA_fillFields = ["topmostSubform[0].Page1[0].Date[0]19", "topmostSubform[0].Page1[0].Date[0]19112", "topmostSubform[0].Page8[0].f8_32[0]176", "date", "Text39", "Text40", "fill_21", "fill_24", "fill_21161", "fill_24163"];
+
+	for (var i = 0; i < signatureDateUS_DA_fillFields.length; i++) {
+		var signatureDateUS_DA = convertDateFormat(signatureDate_DA); // Convert the date format
+		this.getField(signatureDateUS_DA_fillFields[i]).value = signatureDateUS_DA;
+	}
+	
+	// Fill Place and Date fields for Director 1 + 2
+	var placeDate_DA_fillFields = ["Place and Date", "Place, Date 2", "Text7_PnD"];
+
+	function processplaceDate_DA() {
+    return country_D1 + ", " + signatureDate_DA;
+	}
+
+	setFieldValues.call(this, placeDate_DA_fillFields, processplaceDate_DA);
+
+// CONTRACTING PARTY
+
+	var legalName_CP = this.getField("ZX_CP1_Name_ffbh_DA").value;
+	var dateIncorporation_CP = this.getField("ZX_CP1_DoI_ffbh_DA").value;
+	var countryIncorporation_CP = this.getField("ZX_CP1_CtryoI_ffbh_DA").value;
+	var legalForm_CP = this.getField("ZX_CP1_LegalForm_ffbh_DA").value;
+	var regNumber_CP = this.getField("ZX_CP1_RegNo_ffbh_DA").value;
+	var lei_CP = this.getField("ZX_CP1_LEI_ffbh_DA").value;
+	var tin_CP = this.getField("ZX_CP1_TIN_ffbh_DA").value;
+	var co_CP = this.getField("ZX_CP1_coAdr_ffbh_DA").value;
+	var street_CP = this.getField("ZX_CP1_Street_ffbh_DA").value;
+	var streetN_CP = this.getField("ZX_CP1_StreetNo_ffbh_DA").valueAsString.trim();
+	var postCode_CP = this.getField("ZX_CP1_Postcode_ffbh_DA").valueAsString.trim();
+	var city_CP = this.getField("ZX_CP1_City_ffbh_DA").value;
+	var country_CP = this.getField("ZX_CP1_Ctry_ffbh_DA").value;
+
+	// Bulk Actions for Contracting Party
+
+	// Fill all LEI fields
+
+	var lei_CP_fillFields = ["Text Box 1_28", "LEI_2"];
+	setFieldValues.call(this, lei_CP_fillFields, function() {
+		return lei_CP;
+	});
+
+	// Fill all Legal Name fields
+
+	var legalName_CP_fillFields = ["Text Box 1_0", "topmostSubform[0].Page1[0].f1_1[0]21", "name28", "Text Box 312", "Text Box 37", "Text Box 11_nvg", "Text Field33", "\"Party B\"", "Text Box 143", "Text1", "Text Box 133aa", "Text Box 1_51", "Secretary  Sole Director of", "LAST NAME", "Text Box 1345", "Company Name_p0"];
+	setFieldValues.call(this, legalName_CP_fillFields, function() {
+		return legalName_CP;
+	});
+
+	// Fill all Country of Incorporation fields
+
+	var countryIncorporation_CP_fillFields = ["Text Box 1_25", "topmostSubform[0].Page1[0].f1_2[0]22", "Text Box 3_213", "Text Box 3_0", "a"];
+	setFieldValues.call(this, countryIncorporation_CP_fillFields, function() {
+		return countryIncorporation_CP;
+	});
+
+	// Fill all Date of Incorporation fields
+	var dateIncorporation_CP_fillFields = ["Text Box 1_21", "Date of incorporation_p0"];
+	setFieldValues.call(this, dateIncorporation_CP_fillFields, function() {
+		return dateIncorporation_CP;
+	});
+
+	// Fill all Legal Form fields
+	this.getField("Text Box 1_23").value = legalForm_CP;
+
+	// Fill all Registration Number fields
+	this.getField("Text Box 1_27").value = regNumber_CP;
+
+	// Fill all Full Address fields
+	var fullAddress_CP = co_CP.trim() === "" ? 
+		street_CP + " " + streetN_CP + ", " + postCode_CP + " " + city_CP + ", " + country_CP : 
+		"c/o " + co_CP + ", " + street_CP + " " + streetN_CP + ", " + postCode_CP + " " + city_CP + ", " + country_CP;
+
+	var fullAddress_CP_fillFields = ["Text Box 1_19", "address", "Text Box 3_314"];
+
+	setFieldValues.call(this, fullAddress_CP_fillFields, function() {
+		return fullAddress_CP;
+	});
+
+	// Fill all broken-up Address fields
+	if (co_CP == "") {
+		this.getField("topmostSubform[0].Page1[0].f1_4[0]70").value = street_CP + " " + streetN_CP;
+		this.getField("Address street number_p0").value = street_CP + " " + streetN_CP;
+	} else {
+		this.getField("topmostSubform[0].Page1[0].f1_4[0]70").value = "c/o " + co_CP + ", " + street_CP + " " + streetN_CP;
+		this.getField("Address street number_p0").value = "c/o " + co_CP + ", " + street_CP + " " + streetN_CP;
+	}
+
+	this.getField("topmostSubform[0].Page1[0].f1_5[0]71").value = postCode_CP + " " + city_CP;
+	this.getField("Postal code City_p0").value = postCode_CP + " " + city_CP;
+
+	this.getField("topmostSubform[0].Page1[0].f1_6[0]72").value = country_CP;
+	this.getField("Country_p0").value = country_CP;
+	
+	// Fill all TIN fields
+
+	var tin_CP_fillFields = ["topmostSubform[0].Page2[0].Line9b_ReadOrder[0].f2_3[0]", "date1", "Text Box 3_1"];
+
+	setFieldValues.call(this, tin_CP_fillFields, function() {
+		return tin_CP;
+	});
+
+var coreCountries = [
+    "Argentina", "Austria", "Bahamas", "Brazil", "Canada", "Cayman Islands", "Croatia", "Cyprus", "Denmark", "France", "Germany", "Gibraltar", "Greece", "Guatemala", "Guernsey", "Israel", "Italy", "Jersey", "Liechtenstein", "Latvia", "Lebanon", "Luxembourg", "Malta", "Mexico", "Morocco", "Netherlands", "Panama", "Peru", "Poland", "Portugal", "Qatar", "Réunion", "Saudi Arabia", "Singapore", "Spain", "Sweden", "Switzerland", "Turkey", "Ukraine", "United Arab Emirates", "United Kingdom", "Uruguay", "Uzbekistan"
+];
+
+// Check if the country_CP is in the core countries array
+if (coreCountries.includes(country_CP)) {
+    this.getField("Core market_DA").checked = true;
+    this.getField("Core market_DA").value = "On";
+} else {
+    this.getField("NonCore market_DA").checked = true;
+    this.getField("NonCore market_DA").value = "On";
+}
+	
+// BENEFICIAL OWNER 1
+	var firstName_BO1 = this.getField("ZX_BO1_FrstName_ffbh_DA").value;
+	var lastName_BO1 = this.getField("ZX_BO1_LastName_ffbh_DA").value;
+	var countryBirth_BO1 = this.getField("ZX_BO1_CtryoB_ffbh_DA").value;
+	var cityBirth_BO1 = this.getField("ZX_BO1_CityoB_ffbh_DA").value;
+	var dateBirth_BO1 = this.getField("ZX_BO1_DoB_ffbh_DA").value;
+	var citizenship_BO1 = this.getField("ZX_BO1_Citzn_ffbh_DA").value;
+	var tin_BO1 = this.getField("ZX_BO1_TIN_ffbh_DA").valueAsString.trim();
+	var street_BO1 = this.getField("ZX_BO1_Street_ffbh_DA").value;
+	var streetN_BO1 = this.getField("ZX_BO1_StreetNo_ffbh_DA").valueAsString.trim();
+	var postCode_BO1 = this.getField("ZX_BO1_Postcode_ffbh_DA").valueAsString.trim();
+	var city_BO1 = this.getField("ZX_BO1_City_ffbh_DA").value;
+	var country_BO1 = this.getField("ZX_BO1_Ctry_ffbh_DA").value;
+	var fullName_BO1 = firstName_BO1 + " " + lastName_BO1;
+	var phone_BO1 = this.getField("ZX_BO1_Phone_ffbh_DA").valueAsString.trim();
+	var email_BO1 = this.getField("ZX_BO1_Email_ffbh_DA").value;
+	var civilStatus_BO1 = this.getField("ZX_BO1_Civil_ffbh_DA").value;
+	var idType_BO1 = this.getField("ZX_BO1_IDtype_ffbh_DA").value;
+	var idNumber_BO1 = this.getField("ZX_BO1_IDNo_ffbh_DA").valueAsString.trim();
+	var idExpiry_BO1 = this.getField("ZX_BO1_IDexpiry_ffbh_DA").value;
+	var idIssuedby_BO1 = this.getField("ZX_BO1_IDissuedby_ffbh_DA").value;
+	var netWorth_BO1 = this.getField("ZX_BO1_NetWorth_ffbh_DA").value;
+	var revenues_BO1 = this.getField("ZX_BO1_Revenues_ffbh_DA").value;
+	var gender_BO1 = this.getField("ZX_BO1_Gender_ffbh_DA").value;
+	var identifiedBy_BO1 = this.getField("ZX_CP1_IdentifiedBy_DA").value;
+	var legalName_CP_BO1 = this.getField("ZX_BO1_CP_LegalName_ffbh_DA").value;
+	var dateIncorporation_CP_BO1 = this.getField("ZX_BO1_CP_DoI_ffbh_DA").value;
+	var countryIncorporation_CP_BO1 = this.getField("ZX_BO1_CP_CoI_ffbh_DA").value;
+	var street_CP_BO1 = this.getField("ZX_BO1_CP_Street_ffbh_DA").value;
+	var streetN_CP_BO1 = this.getField("ZX_BO1_CP_StreetNo_ffbh_DA").value;
+	var postCode_CP_BO1 = this.getField("ZX_BO1_CP_Postcode_ffbh_DA").value;
+	var city_CP_BO1 = this.getField("ZX_BO1_CP_City_ffbh_DA").value;
+	var country_CP_BO1 = this.getField("ZX_BO1_CP_Ctry_ffbh_DA").value;
+	var controlByMo_CP_BO1 = this.getField("ZX_BO1_CP_byMo_ffbh_DA").value;
+// SPOUSE	
+	var firstName_SPSE_BO1 = this.getField("ZX_SPSE_BO1_FrstName_ffbh_DA").value;
+	var lastName_SPSE_BO1 = this.getField("ZX_SPSE_BO1_LastName_ffbh_DA").value;
+	var dateBirth_SPSE_BO1 = this.getField("ZX_SPSE_BO1_DoB_ffbh_DA").value;
+	var citizenship_SPSE_BO1 = this.getField("ZX_SPSE_BO1_Citzn_ffbh_DA").value;
+	var street_SPSE_BO1 = this.getField("ZX_SPSE_BO1_Street_ffbh_DA").value;
+	var streetN_SPSE_BO1 = this.getField("ZX_SPSE_BO1_StreetNo_ffbh_DA").valueAsString.trim();
+	var postCode_SPSE_BO1 = this.getField("ZX_SPSE_BO1_Postcode_ffbh_DA").valueAsString.trim();
+	var city_SPSE_BO1 = this.getField("ZX_SPSE_BO1_City_ffbh_DA").value;
+	var country_SPSE_BO1 = this.getField("ZX_SPSE_BO1_Ctry_ffbh_DA").value;
+// CHILD 1
+	var firstName_CH1_BO1 = this.getField("ZX_CH1_BO1_FrstName_ffbh_DA").value;
+	var lastName_CH1_BO1 = this.getField("ZX_CH1_BO1_LastName_ffbh_DA").value;
+	var dateBirth_CH1_BO1 = this.getField("ZX_CH1_BO1_DoB_ffbh_DA").value;
+	var citizenship_CH1_BO1 = this.getField("ZX_CH1_BO1_Citzn_ffbh_DA").value;
+	var street_CH1_BO1 = this.getField("ZX_CH1_BO1_Street_ffbh_DA").value;
+	var streetN_CH1_BO1 = this.getField("ZX_CH1_BO1_StreetNo_ffbh_DA").valueAsString.trim();
+	var postCode_CH1_BO1 = this.getField("ZX_CH1_BO1_Postcode_ffbh_DA").valueAsString.trim();
+	var city_CH1_BO1 = this.getField("ZX_CH1_BO1_City_ffbh_DA").value;
+	var country_CH1_BO1 = this.getField("ZX_CH1_BO1_Ctry_ffbh_DA").value;
+// CHILD 2
+	var firstName_CH2_BO1 = this.getField("ZX_CH2_BO1_FrstName_ffbh_DA").value;
+	var lastName_CH2_BO1 = this.getField("ZX_CH2_BO1_LastName_ffbh_DA").value;
+	var dateBirth_CH2_BO1 = this.getField("ZX_CH2_BO1_DoB_ffbh_DA").value;
+	var citizenship_CH2_BO1 = this.getField("ZX_CH2_BO1_Citzn_ffbh_DA").value;
+	var street_CH2_BO1 = this.getField("ZX_CH2_BO1_Street_ffbh_DA").value;
+	var streetN_CH2_BO1 = this.getField("ZX_CH2_BO1_StreetNo_ffbh_DA").valueAsString.trim();
+	var postCode_CH2_BO1 = this.getField("ZX_CH2_BO1_Postcode_ffbh_DA").valueAsString.trim();
+	var city_CH2_BO1 = this.getField("ZX_CH2_BO1_City_ffbh_DA").value;
+	var country_CH2_BO1 = this.getField("ZX_CH2_BO1_Ctry_ffbh_DA").value;
+// CHILD 3
+	var firstName_CH3_BO1 = this.getField("ZX_CH3_BO1_FrstName_ffbh_DA").value;
+	var lastName_CH3_BO1 = this.getField("ZX_CH3_BO1_LastName_ffbh_DA").value;
+	var dateBirth_CH3_BO1 = this.getField("ZX_CH3_BO1_DoB_ffbh_DA").value;
+	var citizenship_CH3_BO1 = this.getField("ZX_CH3_BO1_Citzn_ffbh_DA").value;
+	var street_CH3_BO1 = this.getField("ZX_CH3_BO1_Street_ffbh_DA").value;
+	var streetN_CH3_BO1 = this.getField("ZX_CH3_BO1_StreetNo_ffbh_DA").valueAsString.trim();
+	var postCode_CH3_BO1 = this.getField("ZX_CH3_BO1_Postcode_ffbh_DA").valueAsString.trim();
+	var city_CH3_BO1 = this.getField("ZX_CH3_BO1_City_ffbh_DA").value;
+	var country_CH3_BO1 = this.getField("ZX_CH3_BO1_Ctry_ffbh_DA").value;
+
+	// BULK ACTIONS FOR BENEFICIAL OWNER 1
+
+	this.getField("Text48_p0").value = revenues_BO1;
+
+	// Fill all Phone Number fields for BO1
+	var phone_BO1_fillFields = ["Testo10", "Telephone number_2_p0"];
+	setFieldValues.call(this, phone_BO1_fillFields, function() {
+		return phone_BO1;
+	});
+
+	// Fill all Email fields for BO1
+	var email_BO1_fillFields = ["Testo51", "Email_2_p0"];
+	setFieldValues.call(this, email_BO1_fillFields, function() {
+		return email_BO1;
+	});
+	
+	// Fill Place and Date fields for BO1
+	var placeDate_BO1_fillFields = ["Testo22", "Testo22116"];
+	function processplaceDate_BO1() {
+    return country_BO1 + ", " + signatureDate_DA;
+	}
+	setFieldValues.call(this, placeDate_BO1_fillFields, processplaceDate_BO1);
+	
+	// Fill Place for Credit Card Receipt (1)
+	this.getField("PLACE / DATE3").value = country_BO1 + ", ";
+	
+	// Fill all First Name fields
+	var firstName_BO1_fillFields = ["Testo6", "FIRST NAME", "First name all first names_4_p0"]; 
+	setFieldValues.call(this, firstName_BO1_fillFields, function() {
+		return firstName_BO1;
+	});
+	
+	// Fill all Last Name fields
+	var lastName_BO1_fillFields = ["Testo7", "LAST NAME", "Family Name_4_p0"]; 
+	setFieldValues.call(this, lastName_BO1_fillFields, function() {
+		return lastName_BO1;
+	});
+	
+	// Fill all BO1 Full Name Fields
+	var fullName_BO1_fillFields = ["topmostSubform[0].Page1[0].f_1[0]0", "owner", "topmostSubform[0].Page1[0].f1_01[0]", "Text Box 1_5_nvg", "Testo5", "BO1_DA"];
+	setFieldValues.call(this, fullName_BO1_fillFields, function() {
+		return fullName_BO1;
+	});
+
+	// Fill all Full Address fields
+
+	var fullAddress_BO1_fillFields = ["address1", "Text Box 1_8_nvg"];
+
+	for (var i = 0; i < fullAddress_BO1_fillFields.length; i++) {
+		this.getField(fullAddress_BO1_fillFields[i]).value = street_BO1 + " " + streetN_BO1 + ", " + postCode_BO1 + " " + city_BO1 + ", " + country_BO1;
+	}
+	
+	// Fill all split up Address fields	
+	
+	this.getField("topmostSubform[0].Page1[0].f_3[0]2").value = street_BO1 + " " + streetN_BO1; // W-8BEN (1)
+	this.getField("topmostSubform[0].Page1[0].f_4[0]3").value = postCode_BO1 + " " + city_BO1; // W-8BEN (1)
+	this.getField("topmostSubform[0].Page1[0].Address_ReadOrder[0].f1_07[0]").value = street_BO1 + " " + streetN_BO1; // W-9 (1)
+	this.getField("topmostSubform[0].Page1[0].Address_ReadOrder[0].f1_08[0]").value = postCode_BO1 + " " + city_BO1; // W-9 (1)
+	this.getField("Address street number_2_p0").value = street_BO1 + " " + streetN_BO1; // KYC Form
+	this.getField("Postal code City_2_p0").value = postCode_BO1 + " " + city_BO1; // KYC Form
+	
+	var country_BO1_fillFields = ["topmostSubform[0].Page1[0].f_5[0]4", "Testo12 wohnsitz country", "Country_3_p0"];
+	setFieldValues.call(this, country_BO1_fillFields, function() {
+		return country_BO1;
+	});
+
+	
+	var citizenshipList_BO1 = citizenship_BO1.split(", ");
+	
+	// Citizenship Fields to be populated without any modifications
+	var allStringsFields_BO1 = ["Text Box 1_7_nvg", "Nationality_2_p0"];
+	setFieldValues.call(this, allStringsFields_BO1, function() {
+		return citizenship_BO1;
+	});
+
+	// Citizenship Fields to be populated only with the first country
+	var firstStringFields_BO1 = ["topmostSubform[0].Page1[0].f_2[0]1", "Testo12"];
+
+	if (citizenshipList_BO1.length > 0) {
+		var firstCitizenship_BO1 = citizenshipList_BO1[0];
+		for (var j = 0; j < firstStringFields_BO1.length; j++) {
+			this.getField(firstStringFields_BO1[j]).value = firstCitizenship_BO1;
+		}
+	}
+
+	// Fill all Date of Birth fields
+	var dateBirth_BO1_fillFields = ["Text Box 1_6_nvg", "Testo11", "Date of birth_4_p0"]; 
+	setFieldValues.call(this, dateBirth_BO1_fillFields, function() {
+		return dateBirth_BO1;
+	});
+
+	// Fill all Date of Birth fields with US date format
+	var dateBirthUS_BO1_fillFields = ["topmostSubform[0].Page1[0].f_12[0]11"]; // W-8BEN (1)
+
+	for (var i = 0; i < dateBirthUS_BO1_fillFields.length; i++) {
+		var dateBirthUS_BO1 = convertDateFormat(dateBirth_BO1); // Convert the date format
+		this.getField(dateBirthUS_BO1_fillFields[i]).value = dateBirthUS_BO1;
+	}
+
+	// Place and Country of Birth fields // KYC Form
+	if (cityBirth_BO1.trim() === "") {
+		this.getField("Place of birth City and Country_2_p0").value = countryBirth_BO1;
+	} else {
+		this.getField("Place of birth City and Country_2_p0").value = cityBirth_BO1 + ", " + countryBirth_BO1;
+	}
+
+	// Fill all TIN fields
+	var tin_BO1_fillFields = ["topmostSubform[0].Page1[0].f_10[0]9", "TIN29", "TIN N Tax Identification Number_2_p0"];
+	setFieldValues.call(this, tin_BO1_fillFields, function() {
+		return tin_BO1;
+	});
+	
+	if (tin_BO1.value !== "") {
+	this.getField("TIN130").value = "Foreign TIN";
+	this.getField("TIN2").value = "Individual";
+    this.getField("Check_TIN_BO1_DA").value = "Yes";
+    this.getField("Check_TIN_BO1_DA").checked = true;
+    this.getField("TIN_BO1_DA").value = "TIN (Tax Identification Number) = " + tin_BO1 + " (" + country_BO1 + ")";
+	}
+
+	// Add DTT in W-8BEN (1) if country_BO1 is in the items array
+	if (dtt_wSeries.includes(country_BO1)) {
+		this.getField("topmostSubform[0].Page1[0].f_13[0]12").value = country_BO1;
+	}
+
+this.getField("Favorite mean of contact with the bank_2_p0").value = "by EAM";
+this.getField("Identity document_4_p0").value = idType_BO1 + " " + idNumber_BO1;
+this.getField("Expiration date_4_p0").value = idExpiry_BO1;
+this.getField("Issued by_5_p0").value = idIssuedby_BO1;
+this.getField("Dropdown3_p0_DA").value = civilStatus_BO1;
+this.getField("Text43_p0").value = netWorth_BO1;
+
+// Set values and checked property based on the identifiedBy_BO1 value
+if (identifiedBy_BO1 === "Visit of the client") {
+    setFieldValues(["ModeOfEnteringIntoARelationship_DA"], function() { return "Contact"; });
+    setFieldChecked("ModeOfEnteringIntoARelationship_DA", true);
+    setFieldValues(["Dropdown5_DA"], function() { return "Visit of the client"; });
+} else if (identifiedBy_BO1 === "Visit of the RM") {
+    setFieldValues(["ModeOfEnteringIntoARelationship_DA"], function() { return "Contact"; });
+    setFieldChecked("ModeOfEnteringIntoARelationship_DA", true);
+    setFieldValues(["Dropdown5_DA"], function() { return "Visit of the RM"; });
+} else if (identifiedBy_BO1 === "Delegation") {
+    setFieldValues(["ModeOfEnteringIntoARelationship_DA"], function() { return "Delegation"; });
+    setFieldChecked("ModeOfEnteringIntoARelationship_DA", true);
+    setFieldValues(["YesNo2_DA"], function() { return "Yes"; });
+    setFieldChecked("YesNo2_DA", true);
+    setFieldValues(["YesNo3_DA"], function() { return "Yes"; });
+    setFieldChecked("YesNo3_DA", true);
+    setFieldValues(["Text36_DA"], function() { return delegator_EAM; });
+} else if (identifiedBy_BO1 === "Correspondence") {
+    setFieldValues(["ModeOfEnteringIntoARelationship_DA"], function() { return "Correspondence"; });
+    setFieldChecked("ModeOfEnteringIntoARelationship_DA", true);
+    setFieldValues(["YesNo4_DA"], function() { return "Yes"; });
+    setFieldChecked("YesNo4_DA", true);
+}
+
+if (firstName_CH1_BO1 === "") {
+    this.getField("Text40_p0").value = "";
+} else if (firstName_CH1_BO1 !== "" && firstName_CH2_BO1 !== "" && firstName_CH3_BO1 !== "") {
+    this.getField("Text40_p0").value = 
+        firstName_CH1_BO1 + " " + lastName_CH1_BO1 + ", " + dateBirth_CH1_BO1 + ", " + citizenship_CH1_BO1 + ", " + street_CH1_BO1 + " " + streetN_CH1_BO1 + ", " + postCode_CH1_BO1 + " " + city_CH1_BO1 + ", " + country_CH1_BO1 + "\n" +
+        firstName_CH2_BO1 + " " + lastName_CH2_BO1 + ", " + dateBirth_CH2_BO1 + ", " + citizenship_CH2_BO1 + ", " + street_CH2_BO1 + " " + streetN_CH2_BO1 + ", " + postCode_CH2_BO1 + " " + city_CH2_BO1 + ", " + country_CH2_BO1 + "\n" +
+        firstName_CH3_BO1 + " " + lastName_CH3_BO1 + ", " + dateBirth_CH3_BO1 + ", " + citizenship_CH3_BO1 + ", " + street_CH3_BO1 + " " + streetN_CH3_BO1 + ", " + postCode_CH3_BO1 + " " + city_CH3_BO1 + ", " + country_CH3_BO1;
+} else if (firstName_CH1_BO1 !== "" && firstName_CH2_BO1 !== "" && firstName_CH3_BO1 === "") {
+    this.getField("Text40_p0").value = 
+        firstName_CH1_BO1 + " " + lastName_CH1_BO1 + ", " + dateBirth_CH1_BO1 + ", " + citizenship_CH1_BO1 + ", " + street_CH1_BO1 + " " + streetN_CH1_BO1 + ", " + postCode_CH1_BO1 + " " + city_CH1_BO1 + ", " + country_CH1_BO1 + "\n" +
+        firstName_CH2_BO1 + " " + lastName_CH2_BO1 + ", " + dateBirth_CH2_BO1 + ", " + citizenship_CH2_BO1 + ", " + street_CH2_BO1 + " " + streetN_CH2_BO1 + ", " + postCode_CH2_BO1 + " " + city_CH2_BO1 + ", " + country_CH2_BO1;
+} else if (firstName_CH1_BO1 !== "" && firstName_CH2_BO1 === "" && firstName_CH3_BO1 === "") {
+    this.getField("Text40_p0").value = 
+        firstName_CH1_BO1 + " " + lastName_CH1_BO1 + ", " + dateBirth_CH1_BO1 + ", " + citizenship_CH1_BO1 + ", " + street_CH1_BO1 + " " + streetN_CH1_BO1 + ", " + postCode_CH1_BO1 + " " + city_CH1_BO1 + ", " + country_CH1_BO1;
+}
+
+if (firstName_SPSE_BO1 === "") {
+    this.getField("Text39_p0").value = "";
+} else if (firstName_SPSE_BO1 !== "") {
+    this.getField("Text39_p0").value = firstName_SPSE_BO1 + " " + lastName_SPSE_BO1 + ", " + dateBirth_SPSE_BO1 + ", " + citizenship_SPSE_BO1 + ", " + street_SPSE_BO1 + " " + streetN_SPSE_BO1 + ", " + postCode_SPSE_BO1 + " " + city_SPSE_BO1 + ", " + country_SPSE_BO1;
+}
+
+if (this.getField("ZX_BO1_Gender_ffbh_DA").value === "Male") {
+    this.getField("Text49_p0").value = fullName_BO1 + "\n\nDate of Birth: " + dateBirth_BO1 + 
+    "\nNationality: " + citizenship_BO1 + 
+    "\nMarital Status: " + civilStatus_BO1 + 
+    "\n\nFamily Background:\n" + fullName_BO1 + " comes from a successful family that built its wealth in the [XYZ] industry." +
+    "\n\nProfessional Background:\n" + fullName_BO1 + 
+    " studied [SUBJECT] at the University [XYZ]. He began his career in [YEAR] as a [TITLE] in the [XYZ] department of [COMPANY NAME], a company in the [XYZ] industry." + 
+    "\n\nThe pivotal moment that propelled his career forward and accelerated his wealth accumulation occurred in [YEAR], when he became self-employed and started his first business, [XYZ]." + 
+    "\n\nNotable milestones that contributed to the client's accumulated wealth:" + 
+    "\n\nPosition as [TITLE] at [COMPANY NAME], [YEAR]:\n" + 
+    "This leading role in an international/highly specialized company enabled him to utilize gathered industry knowledge to launch his own company." + 
+    "\n\nSignificant Business Ventures:\n" + 
+    "As a partner/shareholder at [COMPANY NAME], he generated between [YEAR-YEAR] on average an annual income of USD [AMOUNT] alone from salaries and dividends." + 
+    "\n\nReal Estate Investments:\n" + 
+    "Purchase of a building in [CITY] in [YEAR] for around USD [AMOUNT] which doubled in value as of 2024. Sold in [YEAR] for USD [AMOUNT]." + 
+    "\n\nInheritance:\n" + 
+    "The client received in [YEAR] an inheritance/advancement of USD [AMOUNT] from his grandmother." + 
+    "\n\nOther Notable Contributions:\n";
+
+    this.getField("nome").value = "Scelta1";
+    this.getField("nome").checked = true;
+	
+} else if (this.getField("ZX_BO1_Gender_ffbh_DA").value === "Select") {
+    this.getField("Text49_p0").value = fullName_BO1 + "\n\nDate of Birth: " + dateBirth_BO1 + 
+    "\nNationality: " + citizenship_BO1 + 
+    "\nMarital Status: " + civilStatus_BO1 + 
+    "\n\nFamily Background:\n" + fullName_BO1 + " comes from a successful family that built its wealth in the [XYZ] industry." +
+    "\n\nProfessional Background:\n" + fullName_BO1 + 
+    " studied [SUBJECT] at the University [XYZ]. He began his career in [YEAR] as a [TITLE] in the [XYZ] department of [COMPANY NAME], a company in the [XYZ] industry." + 
+    "\n\nThe pivotal moment that propelled his career forward and accelerated his wealth accumulation occurred in [YEAR], when he became self-employed and started his first business, [XYZ]." + 
+    "\n\nNotable milestones that contributed to the client's accumulated wealth:" + 
+    "\n\nPosition as [TITLE] at [COMPANY NAME], [YEAR]:\n" + 
+    "This leading role in an international/highly specialized company enabled him to utilize gathered industry knowledge to launch his own company." + 
+    "\n\nSignificant Business Ventures:\n" + 
+    "As a partner/shareholder at [COMPANY NAME], he generated between [YEAR-YEAR] on average an annual income of USD [AMOUNT] alone from salaries and dividends." + 
+    "\n\nReal Estate Investments:\n" + 
+    "Purchase of a building in [CITY] in [YEAR] for around USD [AMOUNT] which doubled in value as of 2024. Sold in [YEAR] for USD [AMOUNT]." + 
+    "\n\nInheritance:\n" + 
+    "The client received in [YEAR] an inheritance/advancement of USD [AMOUNT] from his grandmother." + 
+    "\n\nOther Notable Contributions:\n";
+	
+} else if (this.getField("ZX_BO1_Gender_ffbh_DA").value === "Female") {
+    this.getField("Text49_p0").value = fullName_BO1 + "\n\nDate of Birth: " + dateBirth_BO1 + 
+    "\nNationality: " + citizenship_BO1 + 
+    "\nMarital Status: " + civilStatus_BO1 + 
+    "\n\nFamily Background:\n" + fullName_BO1 + " comes from a successful family that built its wealth in the [XYZ] industry." +
+    "\n\nProfessional Background:\n" + fullName_BO1 + 
+    " studied [SUBJECT] at the University [XYZ]. She began her career in [YEAR] as a [TITLE] in the [XYZ] department of [COMPANY NAME], a company in the [XYZ] industry." + 
+    "\n\nThe pivotal moment that propelled her career forward and accelerated her wealth accumulation occurred in [YEAR], when she became self-employed and started her first business, [XYZ]." + 
+    "\n\nNotable milestones that contributed to the client's accumulated wealth:" + 
+    "\n\nPosition as [TITLE] at [COMPANY NAME], [YEAR]:\n" + 
+    "This leading role in an international/highly specialized company enabled her to utilize gathered industry knowledge to launch her own company." + 
+    "\n\nSignificant Business Ventures:\n" + 
+    "As a partner/shareholder at [COMPANY NAME], she generated between [YEAR-YEAR] on average an annual income of USD [AMOUNT] alone from salaries and dividends." + 
+    "\n\nReal Estate Investments:\n" + 
+    "Purchase of a building in [CITY] in [YEAR] for around USD [AMOUNT] which doubled in value as of 2024. Sold in [YEAR] for USD [AMOUNT]." + 
+    "\n\nInheritance:\n" + 
+    "The client received in [YEAR] an inheritance/advancement of USD [AMOUNT] from her grandmother." + 
+    "\n\nOther Notable Contributions:\n";
+
+    this.getField("nome").value = "3";
+    this.getField("nome").checked = true;
+}
+
+// BENEFICIAL OWNER 2
+	var firstName_BO2 = this.getField("ZX_BO2_FrstName_ffbh_DA").value;
+	var lastName_BO2 = this.getField("ZX_BO2_LastName_ffbh_DA").value;
+	var countryBirth_BO2 = this.getField("ZX_BO2_CtryoB_ffbh_DA").value;
+	var cityBirth_BO2 = this.getField("ZX_BO2_CityoB_ffbh_DA").value;
+	var dateBirth_BO2 = this.getField("ZX_BO2_DoB_ffbh_DA").value;
+	var citizenship_BO2 = this.getField("ZX_BO2_Citzn_ffbh_DA").value;
+	var tin_BO2 = this.getField("ZX_BO2_TIN_ffbh_DA").valueAsString.trim();
+	var street_BO2 = this.getField("ZX_BO2_Street_ffbh_DA").value;
+	var streetN_BO2 = this.getField("ZX_BO2_StreetNo_ffbh_DA").valueAsString.trim();
+	var postCode_BO2 = this.getField("ZX_BO2_Postcode_ffbh_DA").valueAsString.trim();
+	var city_BO2 = this.getField("ZX_BO2_City_ffbh_DA").value;
+	var country_BO2 = this.getField("ZX_BO2_Ctry_ffbh_DA").value;
+	var fullName_BO2 = firstName_BO2 + " " + lastName_BO2;
+	var phone_BO2 = this.getField("ZX_BO2_Phone_ffbh_DA").valueAsString.trim();
+	var email_BO2 = this.getField("ZX_BO2_Email_ffbh_DA").value;
+	var civilStatus_BO2 = this.getField("ZX_BO2_Civil_ffbh_DA").value;
+	var idType_BO2 = this.getField("ZX_BO2_IDtype_ffbh_DA").value;
+	var idNumber_BO2 = this.getField("ZX_BO2_IDNo_ffbh_DA").valueAsString.trim();
+	var idExpiry_BO2 = this.getField("ZX_BO2_IDexpiry_ffbh_DA").value;
+	var idIssuedby_BO2 = this.getField("ZX_BO2_IDissuedby_ffbh_DA").value;
+	var netWorth_BO2 = this.getField("ZX_BO2_NetWorth_ffbh_DA").value;
+	var revenues_BO2 = this.getField("ZX_BO2_Revenues_ffbh_DA").value;
+	var gender_BO2 = this.getField("ZX_BO2_Gender_ffbh_DA").value;
+	var legalName_CP_BO2 = this.getField("ZX_BO2_CP_LegalName_ffbh_DA").value;
+	var dateIncorporation_CP_BO2 = this.getField("ZX_BO2_CP_DoI_ffbh_DA").value;
+	var countryIncorporation_CP_BO2 = this.getField("ZX_BO2_CP_CoI_ffbh_DA").value;
+	var street_CP_BO2 = this.getField("ZX_BO2_CP_Street_ffbh_DA").value;
+	var streetN_CP_BO2 = this.getField("ZX_BO2_CP_StreetNo_ffbh_DA").value;
+	var postCode_CP_BO2 = this.getField("ZX_BO2_CP_Postcode_ffbh_DA").value;
+	var city_CP_BO2 = this.getField("ZX_BO2_CP_City_ffbh_DA").value;
+	var country_CP_BO2 = this.getField("ZX_BO2_CP_Ctry_ffbh_DA").value;
+	var controlByMo_CP_BO2 = this.getField("ZX_BO2_CP_byMo_ffbh_DA").value;
+// SPOUSE	
+	var firstName_SPSE_BO2 = this.getField("ZX_SPSE_BO2_FrstName_ffbh_DA").value;
+	var lastName_SPSE_BO2 = this.getField("ZX_SPSE_BO2_LastName_ffbh_DA").value;
+	var dateBirth_SPSE_BO2 = this.getField("ZX_SPSE_BO2_DoB_ffbh_DA").value;
+	var citizenship_SPSE_BO2 = this.getField("ZX_SPSE_BO2_Citzn_ffbh_DA").value;
+	var street_SPSE_BO2 = this.getField("ZX_SPSE_BO2_Street_ffbh_DA").value;
+	var streetN_SPSE_BO2 = this.getField("ZX_SPSE_BO2_StreetNo_ffbh_DA").valueAsString.trim();
+	var postCode_SPSE_BO2 = this.getField("ZX_SPSE_BO2_Postcode_ffbh_DA").valueAsString.trim();
+	var city_SPSE_BO2 = this.getField("ZX_SPSE_BO2_City_ffbh_DA").value;
+	var country_SPSE_BO2 = this.getField("ZX_SPSE_BO2_Ctry_ffbh_DA").value;
+// CHILD 1
+	var firstName_CH1_BO2 = this.getField("ZX_CH1_BO2_FrstName_ffbh_DA").value;
+	var lastName_CH1_BO2 = this.getField("ZX_CH1_BO2_LastName_ffbh_DA").value;
+	var dateBirth_CH1_BO2 = this.getField("ZX_CH1_BO2_DoB_ffbh_DA").value;
+	var citizenship_CH1_BO2 = this.getField("ZX_CH1_BO2_Citzn_ffbh_DA").value;
+	var street_CH1_BO2 = this.getField("ZX_CH1_BO2_Street_ffbh_DA").value;
+	var streetN_CH1_BO2 = this.getField("ZX_CH1_BO2_StreetNo_ffbh_DA").valueAsString.trim();
+	var postCode_CH1_BO2 = this.getField("ZX_CH1_BO2_Postcode_ffbh_DA").valueAsString.trim();
+	var city_CH1_BO2 = this.getField("ZX_CH1_BO2_City_ffbh_DA").value;
+	var country_CH1_BO2 = this.getField("ZX_CH1_BO2_Ctry_ffbh_DA").value;
+// CHILD 2
+	var firstName_CH2_BO2 = this.getField("ZX_CH2_BO2_FrstName_ffbh_DA").value;
+	var lastName_CH2_BO2 = this.getField("ZX_CH2_BO2_LastName_ffbh_DA").value;
+	var dateBirth_CH2_BO2 = this.getField("ZX_CH2_BO2_DoB_ffbh_DA").value;
+	var citizenship_CH2_BO2 = this.getField("ZX_CH2_BO2_Citzn_ffbh_DA").value;
+	var street_CH2_BO2 = this.getField("ZX_CH2_BO2_Street_ffbh_DA").value;
+	var streetN_CH2_BO2 = this.getField("ZX_CH2_BO2_StreetNo_ffbh_DA").valueAsString.trim();
+	var postCode_CH2_BO2 = this.getField("ZX_CH2_BO2_Postcode_ffbh_DA").valueAsString.trim();
+	var city_CH2_BO2 = this.getField("ZX_CH2_BO2_City_ffbh_DA").value;
+	var country_CH2_BO2 = this.getField("ZX_CH2_BO2_Ctry_ffbh_DA").value;
+// CHILD 3
+	var firstName_CH3_BO2 = this.getField("ZX_CH3_BO2_FrstName_ffbh_DA").value;
+	var lastName_CH3_BO2 = this.getField("ZX_CH3_BO2_LastName_ffbh_DA").value;
+	var dateBirth_CH3_BO2 = this.getField("ZX_CH3_BO2_DoB_ffbh_DA").value;
+	var citizenship_CH3_BO2 = this.getField("ZX_CH3_BO2_Citzn_ffbh_DA").value;
+	var street_CH3_BO2 = this.getField("ZX_CH3_BO2_Street_ffbh_DA").value;
+	var streetN_CH3_BO2 = this.getField("ZX_CH3_BO2_StreetNo_ffbh_DA").valueAsString.trim();
+	var postCode_CH3_BO2 = this.getField("ZX_CH3_BO2_Postcode_ffbh_DA").valueAsString.trim();
+	var city_CH3_BO2 = this.getField("ZX_CH3_BO2_City_ffbh_DA").value;
+	var country_CH3_BO2 = this.getField("ZX_CH3_BO2_Ctry_ffbh_DA").value;
+
+	// Bulk Actions for Beneficial Owner 2
+		this.getField("Text48_p1").value = revenues_BO2;
+
+
+	// Fill all Phone Number fields for BO2
+	var phone_BO2_fillFields = ["Testo10211", "Testo10100", "Telephone number_2_p1"];
+	setFieldValues.call(this, phone_BO2_fillFields, function() {
+		return phone_BO2;
+	});
+
+	// Fill all Email fields for BO2
+	var email_BO2_fillFields = ["Testo51217", "Testo51106", "Email_2_p1"];
+	setFieldValues.call(this, email_BO2_fillFields, function() {
+		return email_BO2;
+	});
+		
+	// Fill Place and Date fields for BO2
+	var placeDate_BO2_fillFields = ["Testo22227", "Testo22bis"];
+	function processplaceDate_BO2() {
+    return country_BO2 + ", " + signatureDate_DA;
+	}
+	setFieldValues.call(this, placeDate_BO2_fillFields, processplaceDate_BO2);
+	
+	// Fill Place for Credit Card Receipt (2)
+	this.getField("PLACE / DATE4").value = country_BO2 + ", ";
+	
+	// Fill all First Name fields
+	var firstName_BO2_fillFields = ["Testo6209", "Testo698", "FIRST NAME1", "First name all first names_4_p1"]; 
+	setFieldValues.call(this, firstName_BO2_fillFields, function() {
+		return firstName_BO2;
+	});
+	
+	// Fill all Last Name fields
+	var lastName_BO2_fillFields = ["Testo7210", "Testo799", "LAST NAME1", "Family Name_4_p1"]; 
+	setFieldValues.call(this, lastName_BO2_fillFields, function() {
+		return lastName_BO2;
+	});
+	
+	// Fill all BO2 Full Name Fields
+	var fullName_BO2_fillFields = ["topmostSubform[0].Page1[0].f_1[0]091", "owner1", "topmostSubform[0].Page1[0].f1_01[0]0", "Testo5206", "Testo596", "BO2_DA"];
+	setFieldValues.call(this, fullName_BO2_fillFields, function() {
+		return fullName_BO2;
+	});
+
+	// Fill all Full Address fields
+
+	var fullAddress_BO2_fillFields = ["address2"];
+
+	for (var i = 0; i < fullAddress_BO2_fillFields.length; i++) {
+		this.getField(fullAddress_BO2_fillFields[i]).value = street_BO2 + " " + streetN_BO2 + ", " + postCode_BO2 + " " + city_BO2 + ", " + country_BO2;
+	}
+	
+	// Fill all split up Address fields	
+	
+	this.getField("topmostSubform[0].Page1[0].f_3[0]293").value = street_BO2 + " " + streetN_BO2; // W-8BEN (2)
+	this.getField("topmostSubform[0].Page1[0].f_4[0]394").value = postCode_BO2 + " " + city_BO2; // W-8BEN (2)
+	this.getField("topmostSubform[0].Page1[0].Address_ReadOrder[0].f1_07[0]14").value = street_BO2 + " " + streetN_BO2; // W-9 (2)
+	this.getField("topmostSubform[0].Page1[0].Address_ReadOrder[0].f1_08[0]15").value = postCode_BO2 + " " + city_BO2; // W-9 (2)
+	this.getField("Address street number_2_p1").value = street_BO2 + " " + streetN_BO2; // KYC Form
+	this.getField("Postal code City_2_p1").value = postCode_BO2 + " " + city_BO2; // KYC Form
+	
+	var country_BO2_fillFields = ["topmostSubform[0].Page1[0].f_5[0]495", "Testo12 wohnsitz country214", "Testo12 wohnsitz country103", "Country_3_p1"];
+	setFieldValues.call(this, country_BO2_fillFields, function() {
+		return country_BO2;
+	});
+
+	
+	var citizenshipList_BO2 = citizenship_BO2.split(", ");
+	
+	// Citizenship Fields to be populated without any modifications
+	var allStringsFields_BO2 = ["Nationality_2_p1"];
+	setFieldValues.call(this, allStringsFields_BO2, function() {
+		return citizenship_BO2;
+	});
+
+	// Citizenship Fields to be populated only with the first country
+	var firstStringFields_BO2 = ["topmostSubform[0].Page1[0].f_2[0]192", "Testo12213", "Testo12102"];
+
+	if (citizenshipList_BO2.length > 0) {
+		var firstCitizenship_BO2 = citizenshipList_BO2[0];
+		for (var j = 0; j < firstStringFields_BO2.length; j++) {
+			this.getField(firstStringFields_BO2[j]).value = firstCitizenship_BO2;
+		}
+	}
+
+	// Fill all Date of Birth fields
+	var dateBirth_BO2_fillFields = ["Testo11212", "Testo11101", "Date of birth_4_p1"]; 
+	setFieldValues.call(this, dateBirth_BO2_fillFields, function() {
+		return dateBirth_BO2;
+	});
+
+	// Fill all Date of Birth fields with US date format
+	var dateBirthUS_BO2_fillFields = ["topmostSubform[0].Page1[0].f_12[0]11103"]; // W-8BEN (2)
+
+	for (var i = 0; i < dateBirthUS_BO2_fillFields.length; i++) {
+		var dateBirthUS_BO2 = convertDateFormat(dateBirth_BO2); // Convert the date format
+		this.getField(dateBirthUS_BO2_fillFields[i]).value = dateBirthUS_BO2;
+	}
+
+	// Place and Country of Birth fields // KYC Form
+	if (cityBirth_BO2.trim() === "") {
+		this.getField("Place of birth City and Country_2_p1").value = countryBirth_BO2;
+	} else {
+		this.getField("Place of birth City and Country_2_p1").value = cityBirth_BO2 + ", " + countryBirth_BO2;
+	}
+
+	// Fill all TIN fields
+	var tin_BO2_fillFields = ["topmostSubform[0].Page1[0].f_10[0]9100", "TIN331", "TIN N Tax Identification Number_2_p1"];
+	setFieldValues.call(this, tin_BO2_fillFields, function() {
+		return tin_BO2;
+	});
+	
+	if (tin_BO2.value !== "") {
+	this.getField("TIN4").value = "Foreign TIN";
+	this.getField("TIN5").value = "Individual";
+    this.getField("Check_TIN_BO2_DA").value = "Yes";
+    this.getField("Check_TIN_BO2_DA").checked = true;
+    this.getField("TIN_BO2_DA").value = "TIN (Tax Identification Number) = " + tin_BO2 + " (" + country_BO2 + ")";
+	}
+
+	// Add DTT in W-8BEN (2) if country_BO2 is in the items array
+	if (dtt_wSeries.includes(country_BO2)) {
+		this.getField("topmostSubform[0].Page1[0].f_13[0]12104").value = country_BO2;
+	}
+
+	this.getField("Favorite mean of contact with the bank_2_p1").value = "by EAM";
+	this.getField("Identity document_4_p1").value = idType_BO2 + " " + idNumber_BO2;
+	this.getField("Expiration date_4_p1").value = idExpiry_BO2;
+	this.getField("Issued by_5_p1").value = idIssuedby_BO2;
+	this.getField("Dropdown3_p1_DA").value = civilStatus_BO2;
+	this.getField("Text43_p1").value = netWorth_BO2;
+
+	if (firstName_CH1_BO2 === "") {
+		this.getField("Text40_p1").value = "";
+	} else if (firstName_CH1_BO2 !== "" && firstName_CH2_BO2 !== "" && firstName_CH3_BO2 !== "") {
+		this.getField("Text40_p1").value = 
+			firstName_CH1_BO2 + " " + lastName_CH1_BO2 + ", " + dateBirth_CH1_BO2 + ", " + citizenship_CH1_BO2 + ", " + street_CH1_BO2 + " " + streetN_CH1_BO2 + ", " + postCode_CH1_BO2 + " " + city_CH1_BO2 + ", " + country_CH1_BO2 + "\n" +
+			firstName_CH2_BO2 + " " + lastName_CH2_BO2 + ", " + dateBirth_CH2_BO2 + ", " + citizenship_CH2_BO2 + ", " + street_CH2_BO2 + " " + streetN_CH2_BO2 + ", " + postCode_CH2_BO2 + " " + city_CH2_BO2 + ", " + country_CH2_BO2 + "\n" +
+			firstName_CH3_BO2 + " " + lastName_CH3_BO2 + ", " + dateBirth_CH3_BO2 + ", " + citizenship_CH3_BO2 + ", " + street_CH3_BO2 + " " + streetN_CH3_BO2 + ", " + postCode_CH3_BO2 + " " + city_CH3_BO2 + ", " + country_CH3_BO2;
+	} else if (firstName_CH1_BO2 !== "" && firstName_CH2_BO2 !== "" && firstName_CH3_BO2 === "") {
+		this.getField("Text40_p1").value = 
+			firstName_CH1_BO2 + " " + lastName_CH1_BO2 + ", " + dateBirth_CH1_BO2 + ", " + citizenship_CH1_BO2 + ", " + street_CH1_BO2 + " " + streetN_CH1_BO2 + ", " + postCode_CH1_BO2 + " " + city_CH1_BO2 + ", " + country_CH1_BO2 + "\n" +
+			firstName_CH2_BO2 + " " + lastName_CH2_BO2 + ", " + dateBirth_CH2_BO2 + ", " + citizenship_CH2_BO2 + ", " + street_CH2_BO2 + " " + streetN_CH2_BO2 + ", " + postCode_CH2_BO2 + " " + city_CH2_BO2 + ", " + country_CH2_BO2;
+	} else if (firstName_CH1_BO2 !== "" && firstName_CH2_BO2 === "" && firstName_CH3_BO2 === "") {
+		this.getField("Text40_p1").value = 
+			firstName_CH1_BO2 + " " + lastName_CH1_BO2 + ", " + dateBirth_CH1_BO2 + ", " + citizenship_CH1_BO2 + ", " + street_CH1_BO2 + " " + streetN_CH1_BO2 + ", " + postCode_CH1_BO2 + " " + city_CH1_BO2 + ", " + country_CH1_BO2;
+	}
+
+	if (firstName_SPSE_BO2 === "") {
+		this.getField("Text39_p1").value = "";
+	} else if (firstName_SPSE_BO2 !== "") {
+		this.getField("Text39_p1").value = firstName_SPSE_BO2 + " " + lastName_SPSE_BO2 + ", " + dateBirth_SPSE_BO2 + ", " + citizenship_SPSE_BO2 + ", " + street_SPSE_BO2 + " " + streetN_SPSE_BO2 + ", " + postCode_SPSE_BO2 + " " + city_SPSE_BO2 + ", " + country_SPSE_BO2;
+	}
+
+	if (this.getField("ZX_BO2_Gender_ffbh_DA").value === "Male") {
+		this.getField("Text49_p1").value = fullName_BO2 + "\n\nDate of Birth: " + dateBirth_BO2 + 
+		"\nNationality: " + citizenship_BO2 + 
+		"\nMarital Status: " + civilStatus_BO2 + 
+		"\n\nFamily Background:\n" + fullName_BO2 + " comes from a successful family that built its wealth in the [XYZ] industry." +
+		"\n\nProfessional Background:\n" + fullName_BO2 + 
+		" studied [SUBJECT] at the University [XYZ]. He began his career in [YEAR] as a [TITLE] in the [XYZ] department of [COMPANY NAME], a company in the [XYZ] industry." + 
+		"\n\nThe pivotal moment that propelled his career forward and accelerated his wealth accumulation occurred in [YEAR], when he became self-employed and started his first business, [XYZ]." + 
+		"\n\nNotable milestones that contributed to the client's accumulated wealth:" + 
+		"\n\nPosition as [TITLE] at [COMPANY NAME], [YEAR]:\n" + 
+		"This leading role in an international/highly specialized company enabled him to utilize gathered industry knowledge to launch his own company." + 
+		"\n\nSignificant Business Ventures:\n" + 
+		"As a partner/shareholder at [COMPANY NAME], he generated between [YEAR-YEAR] on average an annual income of USD [AMOUNT] alone from salaries and dividends." + 
+		"\n\nReal Estate Investments:\n" + 
+		"Purchase of a building in [CITY] in [YEAR] for around USD [AMOUNT] which doubled in value as of 2024. Sold in [YEAR] for USD [AMOUNT]." + 
+		"\n\nInheritance:\n" + 
+		"The client received in [YEAR] an inheritance/advancement of USD [AMOUNT] from his grandmother." + 
+		"\n\nOther Notable Contributions:\n";
+
+		this.getField("nome205").value = "Scelta1";
+		this.getField("nome205").checked = true;
+		this.getField("nome95").value = "Scelta1";
+		this.getField("nome95").checked = true;
+		
+	} else if (this.getField("ZX_BO2_Gender_ffbh_DA").value === "Select") {
+		this.getField("Text49_p1").value = fullName_BO2 + "\n\nDate of Birth: " + dateBirth_BO2 + 
+		"\nNationality: " + citizenship_BO2 + 
+		"\nMarital Status: " + civilStatus_BO2 + 
+		"\n\nFamily Background:\n" + fullName_BO2 + " comes from a successful family that built its wealth in the [XYZ] industry." +
+		"\n\nProfessional Background:\n" + fullName_BO2 + 
+		" studied [SUBJECT] at the University [XYZ]. He began his career in [YEAR] as a [TITLE] in the [XYZ] department of [COMPANY NAME], a company in the [XYZ] industry." + 
+		"\n\nThe pivotal moment that propelled his career forward and accelerated his wealth accumulation occurred in [YEAR], when he became self-employed and started his first business, [XYZ]." + 
+		"\n\nNotable milestones that contributed to the client's accumulated wealth:" + 
+		"\n\nPosition as [TITLE] at [COMPANY NAME], [YEAR]:\n" + 
+		"This leading role in an international/highly specialized company enabled him to utilize gathered industry knowledge to launch his own company." + 
+		"\n\nSignificant Business Ventures:\n" + 
+		"As a partner/shareholder at [COMPANY NAME], he generated between [YEAR-YEAR] on average an annual income of USD [AMOUNT] alone from salaries and dividends." + 
+		"\n\nReal Estate Investments:\n" + 
+		"Purchase of a building in [CITY] in [YEAR] for around USD [AMOUNT] which doubled in value as of 2024. Sold in [YEAR] for USD [AMOUNT]." + 
+		"\n\nInheritance:\n" + 
+		"The client received in [YEAR] an inheritance/advancement of USD [AMOUNT] from his grandmother." + 
+		"\n\nOther Notable Contributions:\n";
+		
+	} else if (this.getField("ZX_BO2_Gender_ffbh_DA").value === "Female") {
+		this.getField("Text49_p1").value = fullName_BO2 + "\n\nDate of Birth: " + dateBirth_BO2 + 
+		"\nNationality: " + citizenship_BO2 + 
+		"\nMarital Status: " + civilStatus_BO2 + 
+		"\n\nFamily Background:\n" + fullName_BO2 + " comes from a successful family that built its wealth in the [XYZ] industry." +
+		"\n\nProfessional Background:\n" + fullName_BO2 + 
+		" studied [SUBJECT] at the University [XYZ]. She began her career in [YEAR] as a [TITLE] in the [XYZ] department of [COMPANY NAME], a company in the [XYZ] industry." + 
+		"\n\nThe pivotal moment that propelled her career forward and accelerated her wealth accumulation occurred in [YEAR], when she became self-employed and started her first business, [XYZ]." + 
+		"\n\nNotable milestones that contributed to the client's accumulated wealth:" + 
+		"\n\nPosition as [TITLE] at [COMPANY NAME], [YEAR]:\n" + 
+		"This leading role in an international/highly specialized company enabled her to utilize gathered industry knowledge to launch her own company." + 
+		"\n\nSignificant Business Ventures:\n" + 
+		"As a partner/shareholder at [COMPANY NAME], she generated between [YEAR-YEAR] on average an annual income of USD [AMOUNT] alone from salaries and dividends." + 
+		"\n\nReal Estate Investments:\n" + 
+		"Purchase of a building in [CITY] in [YEAR] for around USD [AMOUNT] which doubled in value as of 2024. Sold in [YEAR] for USD [AMOUNT]." + 
+		"\n\nInheritance:\n" + 
+		"The client received in [YEAR] an inheritance/advancement of USD [AMOUNT] from her grandmother." + 
+		"\n\nOther Notable Contributions:\n";
+
+		this.getField("nome205").value = "3";
+		this.getField("nome205").checked = true;
+		this.getField("nome95").value = "3";
+		this.getField("nome95").checked = true;
+	}
+
+	// If BOs are Operating Company then execute below script
+	if (this.getField("ZX_BO1_Type_ffbh_DA").value === "is Operating Company" && this.getField("ZX_BO2_Type_ffbh_DA").value === "is Operating Company") {
+		// Form K
+		this.getField("Text Box 1_59").value = "CP1: " + firstName_BO1 + " " + lastName_BO1 + " CP2: " + firstName_BO2 + " " + lastName_BO2;
+		this.getField("Text Box 1_610").value = "CP1: " + street_BO1 + " " + streetN_BO1 + ", " + postCode_BO1 + " " + city_BO1 + ", " + country_BO1;
+		this.getField("Text Box 1_6101").value = "CP2: " + street_BO2 + " " + streetN_BO2 + ", " + postCode_BO2 + " " + city_BO2 + ", " + country_BO2;
+		// Form A
+		this.getField("Text Field36").value = legalName_CP_BO1;
+		this.getField("Text Field37").value = dateIncorporation_CP_BO1;
+		this.getField("Text Field38").value = countryIncorporation_CP_BO1;
+		this.getField("Text Field39").value = street_CP_BO1 + " " + streetN_CP_BO1 + ", " + postCode_CP_BO1 + " " + city_CP_BO1 + ", " + country_CP_BO1;
+		this.getField("Text Field41").value = legalName_CP_BO2;
+		this.getField("Text Field42").value = dateIncorporation_CP_BO2;
+		this.getField("Text Field43").value = countryIncorporation_CP_BO2;
+		this.getField("Text Field44").value = street_CP_BO2 + " " + streetN_CP_BO2 + ", " + postCode_CP_BO2 + " " + city_CP_BO2 + ", " + country_CP_BO2;
+	} else if (this.getField("ZX_BO1_Type_ffbh_DA").value === "is Operating Company" && this.getField("ZX_BO2_Type_ffbh_DA").value === "is Natural Person" && firstName_BO2 !== "") {
+		// Form K
+		this.getField("Text Box 1_59").value = firstName_BO1 + " " + lastName_BO1;
+		this.getField("Text Box 1_610").value = street_BO1 + " " + streetN_BO1 + ", " + postCode_BO1 + " " + city_BO1 + ", " + country_BO1;
+		// Form A
+		this.getField("Text Field36").value = legalName_CP_BO1;
+		this.getField("Text Field37").value = dateIncorporation_CP_BO1;
+		this.getField("Text Field38").value = countryIncorporation_CP_BO1;
+		this.getField("Text Field39").value = street_CP_BO1 + " " + streetN_CP_BO1 + ", " + postCode_CP_BO1 + " " + city_CP_BO1 + ", " + country_CP_BO1;
+		this.getField("Text Field41").value = fullName_BO2;
+		this.getField("Text Field42").value = dateBirth_BO2;
+		this.getField("Text Field43").value = countryBirth_BO2;
+		this.getField("Text Field44").value = street_BO2 + " " + streetN_BO2 + ", " + postCode_BO2 + " " + city_BO2 + ", " + country_BO2;
+	} else if (this.getField("ZX_BO1_Type_ffbh_DA").value === "is Operating Company" && this.getField("ZX_BO2_Type_ffbh_DA").value === "is Natural Person" && firstName_BO2 === "") {
+		// Form K
+		this.getField("Text Box 1_59").value = firstName_BO1 + " " + lastName_BO1;
+		this.getField("Text Box 1_610").value = street_BO1 + " " + streetN_BO1 + ", " + postCode_BO1 + " " + city_BO1 + ", " + country_BO1;
+		// Form A
+		this.getField("Text Field36").value = legalName_CP_BO1;
+		this.getField("Text Field37").value = dateIncorporation_CP_BO1;
+		this.getField("Text Field38").value = countryIncorporation_CP_BO1;
+		this.getField("Text Field39").value = street_CP_BO1 + " " + streetN_CP_BO1 + ", " + postCode_CP_BO1 + " " + city_CP_BO1 + ", " + country_CP_BO1;
+	} else if (this.getField("ZX_BO1_Type_ffbh_DA").value === "is Natural Person" && this.getField("ZX_BO2_Type_ffbh_DA").value === "is Natural Person" && firstName_BO2 !== "") {
+		this.getField("Text Field36").value = fullName_BO1;
+		this.getField("Text Field37").value = dateBirth_BO1;
+		this.getField("Text Field38").value = countryBirth_BO1;
+		this.getField("Text Field39").value = street_BO1 + " " + streetN_BO1 + ", " + postCode_BO1 + " " + city_BO1 + ", " + country_BO1;
+		this.getField("Text Field41").value = fullName_BO2;
+		this.getField("Text Field42").value = dateBirth_BO2;
+		this.getField("Text Field43").value = countryBirth_BO2;
+		this.getField("Text Field44").value = street_BO2 + " " + streetN_BO2 + ", " + postCode_BO2 + " " + city_BO2 + ", " + country_BO2;
+	} else if (this.getField("ZX_BO1_Type_ffbh_DA").value === "is Natural Person" && this.getField("ZX_BO2_Type_ffbh_DA").value === "is Natural Person" && firstName_BO2 === "") {
+		this.getField("Text Field36").value = fullName_BO1;
+		this.getField("Text Field37").value = dateBirth_BO1;
+		this.getField("Text Field38").value = countryBirth_BO1;
+		this.getField("Text Field39").value = street_BO1 + " " + streetN_BO1 + ", " + postCode_BO1 + " " + city_BO1 + ", " + country_BO1;
+	}
+
+
+// POA 1
+	var firstName_POA1 = this.getField("ZX_POA1_FrstName_ffbh_DA").value;
+	var lastName_POA1 = this.getField("ZX_POA1_LastName_ffbh_DA").value;
+	var countryBirth_POA1 = this.getField("ZX_POA1_CtryoB_ffbh_DA").value;
+	var cityBirth_POA1 = this.getField("ZX_POA1_CityoB_ffbh_DA").value;
+	var dateBirth_POA1 = this.getField("ZX_POA1_DoB_ffbh_DA").value;
+	var citizenship_POA1 = this.getField("ZX_POA1_Citzn_ffbh_DA").value;
+	var power_POA1 = this.getField("ZX_POA1_TypePower_ffbh_DA").value;
+	var street_POA1 = this.getField("ZX_POA1_Street_ffbh_DA").value;
+	var streetN_POA1 = this.getField("ZX_POA1_StreetNo_ffbh_DA").value;
+	var postCode_POA1 = this.getField("ZX_POA1_Postcode_ffbh_DA").value;
+	var city_POA1 = this.getField("ZX_POA1_City_ffbh_DA").value;
+	var country_POA1 = this.getField("ZX_POA1_Ctry_ffbh_DA").value;
+	var signatureRight_POA1 = this.getField("ZX_POA1_SignRight_ffbh_DA").value;
+	var link2CP_POA1 = this.getField("ZX_POA1_Link2CP_ffbh_DA").value;
+	var activity_POA1 = this.getField("ZX_POA1_Activity_ffbh_DA").value;
+	var phone_POA1 = this.getField("ZX_POA1_Phone_ffbh_DA").value;
+	var email_POA1 = this.getField("ZX_POA1_Email_ffbh_DA").value;
+	var idType_POA1 = this.getField("ZX_POA1_IDtype_ffbh_DA").value;
+	var idNumber_POA1 = this.getField("ZX_POA1_IDNo_ffbh_DA").value;
+	var idExpiry_POA1 = this.getField("ZX_POA1_IDexpiry_ffbh_DA").value;
+	var idIssuedby_POA1 = this.getField("ZX_POA1_IDissuedby_ffbh_DA").value;
+
+	if (power_POA1 === "POA") {
+		this.getField("Text Box143a").value = lastName_POA1 + " " + firstName_POA1;
+		this.getField("Text Box 143c").value = street_POA1 + " " + streetN_POA1 + ", " + postCode_POA1 + " " + city_POA1 + ", " + country_POA1;
+		this.getField("Text Box 143d").value = signatureRight_POA1;
+		this.getField("Check Box62_p0_DA").value = "Yes";
+		this.getField("Check Box62_p0_DA").checked = true;
+
+		if (cityBirth_POA1.trim() === "") {
+			this.getField("Text Box 143b").value = "Nationality(ies):\n" + citizenship_POA1 + "\nPlace of Birth:\n" + countryBirth_POA1;
+		} else {
+			this.getField("Text Box 143b").value = "Nationality(ies):\n" + citizenship_POA1 + "\nPlace of Birth:\n" + cityBirth_POA1 + ", " + countryBirth_POA1;
+		}
+	} else if (power_POA1 === "POA + POA E-banking") {
+		this.getField("Text Box143a").value = lastName_POA1 + " " + firstName_POA1;
+		this.getField("Check Box 334").value = "Yes";
+		this.getField("Text Box 1_56").value = lastName_POA1;
+		this.getField("Text Box 1_57").value = firstName_POA1;
+		this.getField("Text Box 143c").value = street_POA1 + " " + streetN_POA1 + ", " + postCode_POA1 + " " + city_POA1 + ", " + country_POA1;
+		this.getField("Text Box 143d").value = signatureRight_POA1;
+		this.getField("Check Box62_p0_DA").value = "Yes";
+		this.getField("Check Box62_p0_DA").checked = true;
+
+		if (cityBirth_POA1.trim() === "") {
+			this.getField("Text Box 143b").value = "Nationality(ies):\n" + citizenship_POA1 + "\nPlace of Birth:\n" + countryBirth_POA1;
+		} else {
+			this.getField("Text Box 143b").value = "Nationality(ies):\n" + citizenship_POA1 + "\nPlace of Birth:\n" + cityBirth_POA1 + ", " + countryBirth_POA1;
+		}
+		if (country_POA1 !== "") {
+			this.getField("Place and Date1").value = country_POA1 + ", " + signatureDate_DA;
+		}
+	} else if (power_POA1 === "Right of Inspection") {
+		this.getField("Text Box 78").value = lastName_POA1;
+		this.getField("Text Box 79").value = firstName_POA1;
+		this.getField("Text Box 80").value = dateBirth_POA1;
+		this.getField("Text Box 81").value = citizenship_POA1;
+		this.getField("Text Box 82").value = street_POA1 + " " + streetN_POA1 + ", " + postCode_POA1 + " " + city_POA1 + ", " + country_POA1;
+		this.getField("Check Box66_p0_DA").value = "Yes";
+		this.getField("Check Box66_p0_DA").checked = true;
+	} else if (power_POA1 === "Right of Inspection + POA E-banking") {
+		this.getField("Check Box 334").value = "Yes";
+		this.getField("Text Box 78").value = lastName_POA1;
+		this.getField("Text Box 79").value = firstName_POA1;
+		this.getField("Text Box 80").value = dateBirth_POA1;
+		this.getField("Text Box 81").value = citizenship_POA1;
+		this.getField("Text Box 82").value = street_POA1 + " " + streetN_POA1 + ", " + postCode_POA1 + " " + city_POA1 + ", " + country_POA1;
+		this.getField("Text Box 1_56").value = lastName_POA1;
+		this.getField("Text Box 1_57").value = firstName_POA1;
+		this.getField("Check Box66_p0_DA").value = "Yes";
+		this.getField("Check Box66_p0_DA").checked = true;
+
+		if (country_POA1 !== "") {
+			this.getField("Place and Date1").value = country_POA1 + ", " + signatureDate_DA;
+		}
+	}
+
+	this.getField("Text62_p0").value = link2CP_POA1;
+	this.getField("Family Name_5_p0").value = lastName_POA1;
+	this.getField("First name all first names_5_p0").value = firstName_POA1;
+	this.getField("Identity document_3_p0").value = idType_POA1 + " " + idNumber_POA1;
+	this.getField("Expiration date_5_p0").value = idExpiry_POA1;
+	this.getField("Issued by_6_p0").value = idIssuedby_POA1;
+	this.getField("Address street number_3_p0").value = street_POA1 + " " + streetN_POA1;
+	this.getField("Postal code City_3_p0").value = postCode_POA1 + " " + city_POA1;
+	this.getField("Country_5_p0").value = country_POA1;
+	this.getField("Nationality_3_p0").value = citizenship_POA1;
+	this.getField("Date of birth_5_p0").value = dateBirth_POA1;
+
+	if (cityBirth_POA1 !== "" && countryBirth_POA1 !== "") {
+		this.getField("Place of birth city and country_p0").value = cityBirth_POA1 + ", " + countryBirth_POA1;
+	} else if (cityBirth_POA1 === "" && countryBirth_POA1 !== "") {
+		this.getField("Place of birth city and country_p0").value = countryBirth_POA1;
+	} else if (cityBirth_POA1 === "" && countryBirth_POA1 === "") {
+		this.getField("Place of birth city and country_p0").value = "";
+	}
+	
+	this.getField("Telephone number_3_p0").value = phone_POA1;
+	this.getField("Email_3_p0").value = email_POA1;
+	this.getField("Text63_p0").value = activity_POA1;
+
+	if (legalName_EAM !== "") {
+			this.getField("Favorite mean of contact with the bank_3_p0").value = "by EAM";
+		}
+
+
+//POA 2
+	var firstName_POA2 = this.getField("ZX_POA2_FrstName_ffbh_DA").value;
+	var lastName_POA2 = this.getField("ZX_POA2_LastName_ffbh_DA").value;
+	var countryBirth_POA2 = this.getField("ZX_POA2_CtryoB_ffbh_DA").value;
+	var cityBirth_POA2 = this.getField("ZX_POA2_CityoB_ffbh_DA").value;
+	var dateBirth_POA2 = this.getField("ZX_POA2_DoB_ffbh_DA").value;
+	var citizenship_POA2 = this.getField("ZX_POA2_Citzn_ffbh_DA").value;
+	var power_POA2 = this.getField("ZX_POA2_TypePower_ffbh_DA").value;
+	var street_POA2 = this.getField("ZX_POA2_Street_ffbh_DA").value;
+	var streetN_POA2 = this.getField("ZX_POA2_StreetNo_ffbh_DA").value;
+	var postCode_POA2 = this.getField("ZX_POA2_Postcode_ffbh_DA").value;
+	var city_POA2 = this.getField("ZX_POA2_City_ffbh_DA").value;
+	var country_POA2 = this.getField("ZX_POA2_Ctry_ffbh_DA").value;
+	var signatureRight_POA2 = this.getField("ZX_POA2_SignRight_ffbh_DA").value;
+	var link2CP_POA2 = this.getField("ZX_POA2_Link2CP_ffbh_DA").value;
+	var activity_POA2 = this.getField("ZX_POA2_Activity_ffbh_DA").value;
+	var phone_POA2 = this.getField("ZX_POA2_Phone_ffbh_DA").value;
+	var email_POA2 = this.getField("ZX_POA2_Email_ffbh_DA").value;
+	var idType_POA2 = this.getField("ZX_POA2_IDtype_ffbh_DA").value;
+	var idNumber_POA2 = this.getField("ZX_POA2_IDNo_ffbh_DA").value;
+	var idExpiry_POA2 = this.getField("ZX_POA2_IDexpiry_ffbh_DA").value;
+	var idIssuedby_POA2 = this.getField("ZX_POA2_IDissuedby_ffbh_DA").value;
+
+	if (power_POA2 === "POA") {
+		this.getField("Text Box 143e").value = lastName_POA2 + " " + firstName_POA2;
+		this.getField("Text Box 143g").value = street_POA2 + " " + streetN_POA2 + ", " + postCode_POA2 + " " + city_POA2 + ", " + country_POA2;
+		this.getField("Text Box 143h").value = signatureRight_POA2;
+		this.getField("Check Box62_p1_DA").value = "Yes";
+		this.getField("Check Box62_p1_DA").checked = true;
+
+		if (cityBirth_POA2.trim() === "") {
+			this.getField("Text Box 143f").value = "Nationality(ies):\n" + citizenship_POA2 + "\nPlace of Birth:\n" + countryBirth_POA2;
+		} else {
+			this.getField("Text Box 143f").value = "Nationality(ies):\n" + citizenship_POA2 + "\nPlace of Birth:\n" + cityBirth_POA2 + ", " + countryBirth_POA2;
+		}
+	} else if (power_POA2 === "POA + POA E-banking") {
+		this.getField("Text Box 143e").value = lastName_POA2 + " " + firstName_POA2;
+		this.getField("Check Box 3345").value = "Yes";
+		this.getField("Text Box 1_567").value = lastName_POA2;
+		this.getField("Text Box 1_578").value = firstName_POA2;
+		this.getField("Text Box 143g").value = street_POA2 + " " + streetN_POA2 + ", " + postCode_POA2 + " " + city_POA2 + ", " + country_POA2;
+		this.getField("Text Box 143h").value = signatureRight_POA2;
+		this.getField("Check Box62_p1_DA").value = "Yes";
+		this.getField("Check Box62_p1_DA").checked = true;
+
+		if (cityBirth_POA2.trim() === "") {
+			this.getField("Text Box 143f").value = "Nationality(ies):\n" + citizenship_POA2 + "\nPlace of Birth:\n" + countryBirth_POA2;
+		} else {
+			this.getField("Text Box 143f").value = "Nationality(ies):\n" + citizenship_POA2 + "\nPlace of Birth:\n" + cityBirth_POA2 + ", " + countryBirth_POA2;
+		}
+		if (country_POA2 !== "") {
+			this.getField("Place and Date119").value = country_POA2 + ", " + signatureDate_DA;
+		}
+	} else if (power_POA2 === "Right of Inspection") {
+		this.getField("Text Box 783").value = lastName_POA2;
+		this.getField("Text Box 794").value = firstName_POA2;
+		this.getField("Text Box 805").value = dateBirth_POA2;
+		this.getField("Text Box 816").value = citizenship_POA2;
+		this.getField("Text Box 827").value = street_POA2 + " " + streetN_POA2 + ", " + postCode_POA2 + " " + city_POA2 + ", " + country_POA2;
+		this.getField("Check Box66_p1_DA").value = "Yes";
+		this.getField("Check Box66_p1_DA").checked = true;
+	} else if (power_POA2 === "Right of Inspection + POA E-banking") {
+		this.getField("Check Box 3345").value = "Yes";
+		this.getField("Text Box 783").value = lastName_POA2;
+		this.getField("Text Box 794").value = firstName_POA2;
+		this.getField("Text Box 805").value = dateBirth_POA2;
+		this.getField("Text Box 816").value = citizenship_POA2;
+		this.getField("Text Box 827").value = street_POA2 + " " + streetN_POA2 + ", " + postCode_POA2 + " " + city_POA2 + ", " + country_POA2;
+		this.getField("Text Box 1_567").value = lastName_POA2;
+		this.getField("Text Box 1_578").value = firstName_POA2;
+		this.getField("Check Box66_p1_DA").value = "Yes";
+		this.getField("Check Box66_p1_DA").checked = true;
+
+		if (country_POA2 !== "") {
+			this.getField("Place and Date119").value = country_POA2 + ", " + signatureDate_DA;
+		}
+		}
+
+	this.getField("Text62_p1").value = link2CP_POA2;
+	this.getField("Family Name_5_p1").value = lastName_POA2;
+	this.getField("First name all first names_5_p1").value = firstName_POA2;
+	this.getField("Identity document_5_p1").value = idType_POA2 + " " + idNumber_POA2;
+	this.getField("Expiration date_5_p1").value = idExpiry_POA2;
+	this.getField("Issued by_6_p1").value = idIssuedby_POA2;
+	this.getField("Address street number_3_p1").value = street_POA2 + " " + streetN_POA2;
+	this.getField("Postal code City_3_p1").value = postCode_POA2 + " " + city_POA2;
+	this.getField("Country_5_p1").value = country_POA2;
+	this.getField("Nationality_3_p1").value = citizenship_POA2;
+	this.getField("Date of birth_5_p1").value = dateBirth_POA2;
+	
+	if (cityBirth_POA2 !== "" && countryBirth_POA2 !== "") {
+	this.getField("Place of birth city and country_p1").value = cityBirth_POA2 + ", " + countryBirth_POA2;
+	} else if (cityBirth_POA2 === "" && countryBirth_POA2 !== "") {
+	this.getField("Place of birth city and country_p1").value = countryBirth_POA2;
+	} else if (cityBirth_POA2 === "" && countryBirth_POA2 === "") {
+	this.getField("Place of birth city and country_p1").value = "";
+	}
+	
+	this.getField("Telephone number_3_p1").value = phone_POA2;
+	this.getField("Email_3_p1").value = email_POA2;
+	this.getField("Text63_p1").value = activity_POA2;
+
+	if (legalName_EAM !== "") {
+    this.getField("Favorite mean of contact with the bank_3_p1").value = "by EAM";
+    }
+	
+// KYC FORM
+	this.getField("Check Box1_DA").value = "Yes"; // KYC Form Type 'Domiciliary Company (CDB form A)
+	this.getField("Arrival Channel S2i").value = cav_EAM;
+
+	var kycNegative = this.getField("ZX_CheckBox_Risks_DA");
+
+	var checkboxesKYCno = [
+    "YesNo1_DA", "YesNo5_DA", "YesNo6_DA", "YesNo16_p0_DA", "YesNo17_p0_DA", "YesNo18_p0_DA", "YesNo19_p0_DA", "YesNo21_p0_DA", "YesNo22_p0_DA", "YesNo23_p0_DA", "YesNo24_p0_DA", "YesNo16_p1_DA", "YesNo17_p1_DA", "YesNo18_p1_DA", "YesNo19_p1_DA", "YesNo21_p1_DA", "YesNo22_p1_DA", "YesNo23_p1_DA", "YesNo24_p1_DA", "YesNo25_p0_DA", 
+    "YesNo26_p0_DA", "YesNo27_p0_DA", "YesNo28_p0_DA", "YesNo29_p0_DA", "YesNo30_p0_DA", "YesNo31_p0_DA", "YesNo25_p1_DA", "YesNo26_p1_DA", "YesNo27_p1_DA", "YesNo28_p1_DA", "YesNo29_p1_DA", "YesNo30_p1_DA", "YesNo31_p1_DA", "YesNo32_DA", "YesNo33_DA"];
+
+	var checkboxesKYCyes = ["YesNo20_p0_DA", "YesNo20_p1_DA"];
+
+if (kycNegative.value === "Yes") {
+    checkboxesKYCno.forEach(function(field) {
+        var checkBoxNo = this.getField(field);
+        checkBoxNo.value = "No";
+        checkBoxNo.checked = true;
+    }, this); // Correctly bind the context
+
+    checkboxesKYCyes.forEach(function(field) {
+        var checkBoxYes = this.getField(field);
+        checkBoxYes.value = "Yes";
+        checkBoxYes.checked = true;
+    }, this); // Correctly bind the context
+} else {
+    checkboxesKYCno.forEach(function(field) {
+        var checkBoxNo = this.getField(field);
+        checkBoxNo.value = "Off"; // Set to "Off" for unchecked state
+        checkBoxNo.checked = false;
+    }, this); // Correctly bind the context
+
+    checkboxesKYCyes.forEach(function(field) {
+        var checkBoxYes = this.getField(field);
+        checkBoxYes.value = "Off"; // Set to "Off" for unchecked state
+        checkBoxYes.checked = false;
+    }, this); // Correctly bind the context
+}
+
+if (this.getField("ZX_ExpInflow_ffbh_DA").value !== "") {
+	this.getField("Text9").value = expectedInflow + " from " + orderingBank  + ", " + orderingBankCountry + " within 3 months of account opening.";
+}
+	this.getField("Name of the ordering bank").value = orderingBank;
+	this.getField("Country of the ordering bank").value = orderingBankCountry;
+	
+if (this.getField("ZX_OrdPty_Diff_ffbh_DA").value !== "") {
+    this.getField("Name of the ordering party").value = orderingPtyDiff;
+	this.getField("If the ordering party is different from the Beneficial Owner of the new account").value = orderingPtyDiffExplanation;
+	} else {
+	this.getField("Name of the ordering party").value = fullName_BO1 + " & " + fullName_BO2;
+	}
